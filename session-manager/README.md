@@ -6,8 +6,9 @@ A zero-overhead context pollution defense system for Antigravity LLM architectur
 ## Architecture Core
 1. **Master-Sub Memory Tree**: Global settings are stored in `MEMORY.md`. Session-specific configurations are physically isolated in `sub_memories/*.md`.
 2. **Dual-Track Context Monitoring**:
-   - Velocity Peak (Instant I/O > 30KB)
-   - Capacity Threshold (Cumulative Volume > 150KB)
+   - Velocity Peak (Instant I/O Surge > 50KB): Prevents sudden large text dumps from instantly polluting the context window.
+   - Capacity Threshold (Cumulative Dirty Cache > 1MB): Enforces hard physical boundaries before model fatigue and hallucination occur.
+   - Archive Compaction Guard (L2 Volume > 500KB): Triggers automated compaction alerts when historical cold archives expand.
 3. **OS-Level Watchdog**: Uses Mac `fsevents` (via Python `watchdog` library) for zero-polling file system event monitoring.
 4. **Physical Visual Interruption**: Leverages macOS native `NSUserNotificationCenter` via AppleScript to bypass application frontend boundaries and force visual UI notification.
 

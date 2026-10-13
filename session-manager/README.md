@@ -16,12 +16,12 @@ A zero-overhead context pollution defense system for Antigravity LLM architectur
 2. Install dependencies: `pip install watchdog`.
 3. Execution: The agent or `hooks.json` mounts `scripts/session_monitor.py` as a background Daemon.
 
-## Post-Interruption SOP (LSM-Tree & Task Lifecycle Migration)
-When the system triggers an OS notification (L1 cache flush), the operational flow MUST be:
-1. **Cache Flush**: Terminate the active bloated session in the UI.
-2. **Zombie Purge**: The new session MUST scan for and explicitly `kill` any background daemon processes (`schedule` cron jobs) left behind by the abandoned session.
-3. **Cold Boot Recovery**: Upon loading the `_SOP.md` (L1), the agent MUST proactively invoke `schedule` to remount all business-critical cron tasks extracted from the L1 configurations.
-4. **Resumption**: Launch the new session, triggering the system directives to inherit the L1 rules without pollution.
+## Post-Interruption SOP (Four-Phase Graceful Teardown)
+When the system triggers an OS notification, the operational flow MUST be:
+1. **Phase 1: Crystallize**: Summarize verified logic and state, overwrite to L1 hot cache (`< 15KB`), append troubleshooting logs to L2 archive.
+2. **Phase 2: Teardown (Self-Termination)**: The active session MUST inspect its own tasks via `manage_task(Action='list')`, kill all registered schedule/daemon tasks via `manage_task(Action='kill')`, and assert that the task count is 0.
+3. **Phase 3: Handoff**: Emit handoff report and notify operator that background resources are fully released and the session is safe to close.
+4. **Phase 4: Inherit**: Launch new session, inherit sanitized L1 rules, and remount tasks cleanly based on `agent_scheduled_tasks.json`.
 
 ## Disaster Recovery
 Adheres to the `Boot Recovery Protocol`: In the event of a server shutdown, the agent will autonomously restart this daemon upon noticing the system crash.

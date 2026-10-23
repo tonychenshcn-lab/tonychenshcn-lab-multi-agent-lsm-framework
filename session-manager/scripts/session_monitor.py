@@ -15,23 +15,12 @@ class TranscriptHandler(FileSystemEventHandler):
         self.dept_aliases = {
             "System_Master_Controller": "System_Master_Controller",
             "Master_Controller": "System_Master_Controller",
-            "Social_Media_Distribution_Agent": "Social_Media_Distribution_Agent",
-            "Social_Media_Agent": "Social_Media_Distribution_Agent",
-            "Social_Platform_X": "Social_Media_Distribution_Agent",
-            "Quantitative_Trading_Agent": "Quantitative_Trading_Agent",
-            "Quant_Agent": "Quantitative_Trading_Agent",
-            "Alpha_Market": "Quantitative_Trading_Agent",
-            "Daily_Market_Report_Agent": "Daily_Market_Report_Agent",
-            "Market_Report_Agent": "Daily_Market_Report_Agent",
-            "Daily_Report": "Daily_Market_Report_Agent",
-            "Professional_Recruiting_Agent": "Professional_Recruiting_Agent",
-            "Recruiting_Agent": "Professional_Recruiting_Agent",
-            "Professional_Network_Z": "Professional_Recruiting_Agent",
-            "Core_Engineering_Agent": "Core_Engineering_Agent",
-            "Engineering_Agent": "Core_Engineering_Agent",
-            "Video_Production_Agent": "Video_Production_Agent",
-            "Video_Agent": "Video_Production_Agent",
-            "Video_Platform_Y": "Video_Production_Agent",
+            "Agent1": "Agent1",
+            "Agent2": "Agent2",
+            "Agent3": "Agent3",
+            "Agent4": "Agent4",
+            "Agent5": "Agent5",
+            "Agent6": "Agent6",
         }
         
     def match_department(self, text):
@@ -107,18 +96,9 @@ class TranscriptHandler(FileSystemEventHandler):
                     return f"{formal_name} ({session_id[:8]})"
 
             # 6. 业务特征兜底推断
-            if any(k in scan_chunk for k in ["Social_Platform_X", "Social_Media_Distribution"]):
-                return f"Social_Media_Distribution_Agent ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["quant_trading", "Alpha_Market", "Quantitative_Trading"]):
-                return f"Quantitative_Trading_Agent ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["Daily_Market_Report", "Market_Report"]):
-                return f"Daily_Market_Report_Agent ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["Professional_Network_Z", "Professional_Recruiting"]):
-                return f"Professional_Recruiting_Agent ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["session_monitor", "Session Manager", "Core_Engineering"]):
-                return f"Core_Engineering_Agent ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["Video_Platform_Y", "Video_Production"]):
-                return f"Video_Production_Agent ({session_id[:8]})"
+            for i in range(1, 7):
+                if f"Agent{i}" in scan_chunk:
+                    return f"Agent{i} ({session_id[:8]})"
 
         except Exception:
             pass
@@ -133,12 +113,12 @@ class TranscriptHandler(FileSystemEventHandler):
             dept_name = session_name.split(" (")[0].strip() if " (" in session_name else session_name
             valid_depts = [
                 "System_Master_Controller",
-                "Social_Media_Distribution_Agent",
-                "Quantitative_Trading_Agent",
-                "Daily_Market_Report_Agent",
-                "Professional_Recruiting_Agent",
-                "Core_Engineering_Agent",
-                "Video_Production_Agent"
+                "Agent1",
+                "Agent2",
+                "Agent3",
+                "Agent4",
+                "Agent5",
+                "Agent6"
             ]
             target_l1 = f"/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/{dept_name}_SOP.md" if dept_name in valid_depts else "/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/[Agent_Role]_SOP.md"
             target_l2 = f"/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/{dept_name}_Archive.md" if dept_name in valid_depts else "/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/[Agent_Role]_Archive.md"

@@ -35,9 +35,9 @@
 - **复盘汇报**：过滤执行过程中的噪音，向Admin_User提供高浓度的“执行摘要 (Executive Summary)”。
 
 ## 下属团队架构 (Team Structure)
-- **员工 1 (Social_Media_Distribution_Agent)**: `<MOCK_UUID>`
-- **员工 2 (Daily_Market_Report_Agent)**: `<MOCK_UUID>`
-- **员工 3 (Quantitative_Trading_Agent)**: `<MOCK_UUID>`
-- **员工 4 (Professional_Recruiting_Agent)**: `<MOCK_UUID>`
-- **员工 5 (Core_Engineering_Agent)**: `<MOCK_UUID>`
-- **员工 6 (Video_Production_Agent)**: `<MOCK_UUID>`
+- **员工 1 (Agent1)**: `<MOCK_UUID>`
+- **员工 2 (Agent2)**: `<MOCK_UUID>`
+- **员工 3 (Agent3)**: `<MOCK_UUID>`
+- **员工 4 (Agent4)**: `<MOCK_UUID>`
+- **员工 5 (Agent5)**: `<MOCK_UUID>`
+- **员工 6 (Agent6)**: `<MOCK_UUID>`

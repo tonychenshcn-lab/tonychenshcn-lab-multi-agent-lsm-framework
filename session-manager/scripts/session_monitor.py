@@ -13,28 +13,25 @@ class TranscriptHandler(FileSystemEventHandler):
         self.brain_dir = os.path.expanduser("~/.gemini/antigravity/brain")
         self.archive_dir = os.path.expanduser("~/.gemini/antigravity/scratch/.agents/rules/sub_memories")
         self.dept_aliases = {
-            "总经理": "总经理",
-            "小红书": "小红书创作部经理",
-            "小红书创作部": "小红书创作部经理",
-            "小红书创作部经理": "小红书创作部经理",
-            "A股": "A股市场首席分析师",
-            "A股分析师": "A股市场首席分析师",
-            "A股市场首席分析师": "A股市场首席分析师",
-            "量化": "A股市场首席分析师",
-            "财经早报": "财经早报编辑部主编",
-            "财经日报": "财经早报编辑部主编",
-            "财经早报编辑部主编": "财经早报编辑部主编",
-            "主编": "财经早报编辑部主编",
-            "LinkedIn": "LinkedIn猎头首席合伙人",
-            "猎头": "LinkedIn猎头首席合伙人",
-            "LinkedIn猎头首席合伙人": "LinkedIn猎头首席合伙人",
-            "Sally": "总经理",
-            "研发": "研发部经理",
-            "研发部": "研发部经理",
-            "研发部经理": "研发部经理",
-            "YouTube": "YouTube艺术部总监",
-            "YouTube艺术部": "YouTube艺术部总监",
-            "YouTube艺术部总监": "YouTube艺术部总监",
+            "System_Master_Controller": "System_Master_Controller",
+            "Master_Controller": "System_Master_Controller",
+            "Social_Media_Distribution_Agent": "Social_Media_Distribution_Agent",
+            "Social_Media_Agent": "Social_Media_Distribution_Agent",
+            "Social_Platform_X": "Social_Media_Distribution_Agent",
+            "Quantitative_Trading_Agent": "Quantitative_Trading_Agent",
+            "Quant_Agent": "Quantitative_Trading_Agent",
+            "Alpha_Market": "Quantitative_Trading_Agent",
+            "Daily_Market_Report_Agent": "Daily_Market_Report_Agent",
+            "Market_Report_Agent": "Daily_Market_Report_Agent",
+            "Daily_Report": "Daily_Market_Report_Agent",
+            "Professional_Recruiting_Agent": "Professional_Recruiting_Agent",
+            "Recruiting_Agent": "Professional_Recruiting_Agent",
+            "Professional_Network_Z": "Professional_Recruiting_Agent",
+            "Core_Engineering_Agent": "Core_Engineering_Agent",
+            "Engineering_Agent": "Core_Engineering_Agent",
+            "Video_Production_Agent": "Video_Production_Agent",
+            "Video_Agent": "Video_Production_Agent",
+            "Video_Platform_Y": "Video_Production_Agent",
         }
         
     def match_department(self, text):
@@ -110,18 +107,18 @@ class TranscriptHandler(FileSystemEventHandler):
                     return f"{formal_name} ({session_id[:8]})"
 
             # 6. 业务特征兜底推断
-            if any(k in scan_chunk for k in ["xhs_", "小红书", "xiaohongshu", "草稿箱"]):
-                return f"小红书创作部经理 ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["stock_model", "realtime_intraday", "量化系统", "A股"]):
-                return f"A股市场首席分析师 ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["财经日报", "每日财经日报", "财经早报"]):
-                return f"财经早报编辑部主编 ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["LinkedIn", "候选人", "猎头", "fetch_resumes"]):
-                return f"LinkedIn猎头首席合伙人 ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["session_monitor", "Session Manager", "研发部"]):
-                return f"研发部经理 ({session_id[:8]})"
-            if any(k in scan_chunk for k in ["YouTube", "艺术部"]):
-                return f"YouTube艺术部总监 ({session_id[:8]})"
+            if any(k in scan_chunk for k in ["Social_Platform_X", "Social_Media_Distribution"]):
+                return f"Social_Media_Distribution_Agent ({session_id[:8]})"
+            if any(k in scan_chunk for k in ["quant_trading", "Alpha_Market", "Quantitative_Trading"]):
+                return f"Quantitative_Trading_Agent ({session_id[:8]})"
+            if any(k in scan_chunk for k in ["Daily_Market_Report", "Market_Report"]):
+                return f"Daily_Market_Report_Agent ({session_id[:8]})"
+            if any(k in scan_chunk for k in ["Professional_Network_Z", "Professional_Recruiting"]):
+                return f"Professional_Recruiting_Agent ({session_id[:8]})"
+            if any(k in scan_chunk for k in ["session_monitor", "Session Manager", "Core_Engineering"]):
+                return f"Core_Engineering_Agent ({session_id[:8]})"
+            if any(k in scan_chunk for k in ["Video_Platform_Y", "Video_Production"]):
+                return f"Video_Production_Agent ({session_id[:8]})"
 
         except Exception:
             pass
@@ -135,16 +132,16 @@ class TranscriptHandler(FileSystemEventHandler):
             session_name = self.get_session_name(session_id)
             dept_name = session_name.split(" (")[0].strip() if " (" in session_name else session_name
             valid_depts = [
-                "总经理",
-                "小红书创作部经理",
-                "A股市场首席分析师",
-                "财经早报编辑部主编",
-                "LinkedIn猎头首席合伙人",
-                "研发部经理",
-                "YouTube艺术部总监"
+                "System_Master_Controller",
+                "Social_Media_Distribution_Agent",
+                "Quantitative_Trading_Agent",
+                "Daily_Market_Report_Agent",
+                "Professional_Recruiting_Agent",
+                "Core_Engineering_Agent",
+                "Video_Production_Agent"
             ]
-            target_l1 = f"/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/{dept_name}.md" if dept_name in valid_depts else "/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/[所属部门].md"
-            target_l2 = f"/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/{dept_name}_Archive.md" if dept_name in valid_depts else "/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/[所属部门]_Archive.md"
+            target_l1 = f"/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/{dept_name}_SOP.md" if dept_name in valid_depts else "/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/[Agent_Role]_SOP.md"
+            target_l2 = f"/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/{dept_name}_Archive.md" if dept_name in valid_depts else "/Users/<USER>/.gemini/antigravity/scratch/.agents/rules/sub_memories/[Agent_Role]_Archive.md"
             
             crystallize_prompt = (
                 f"【系统级指令：会话知识沉淀与优雅退场闭环】\n"
